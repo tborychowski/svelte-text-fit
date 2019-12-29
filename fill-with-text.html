@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+<meta charset=UTF-8>
+<style>
+* { box-sizing: border-box;}
+.div { border: 1px solid red; width: 200px; height: 200px; margin-top: 10px;}
+span { display: inline-block; transform-origin: 0 0;}
+</style>
+</head>
+<body>
+	<input id="inT" value="text" placeholder="text">
+	<input id="inW" value="200" placeholder="200" type="number">
+
+	<div class="div">
+		<span id="t1" class="text">MY UGLY TEXT</span>
+	</div>
+
+<script>
+
+function resize () {
+	const textNode = document.getElementById("t1");
+	const parentNode = textNode.parentNode;
+	textNode.style.transform = '';
+	const textBox = textNode.getBoundingClientRect();
+	const parentBox = parentNode.getBoundingClientRect();
+	const val = parentBox.width / textBox.width;
+	textNode.style.transform = `matrix(${val}, 0, 0, ${val}, 0, 0)`;
+}
+
+let W;
+const inW = document.querySelector('#inW');
+const inT = document.querySelector('#inT');
+
+const divs = document.querySelectorAll('.div');
+const texts = document.querySelectorAll('.text');
+
+inW.addEventListener('input', onWidth);
+inT.addEventListener('input', onText);
+
+inW.value = '200';
+inT.value = 'Hello world';
+onWidth();
+onText();
+
+function onWidth () {
+	W = +inW.value;
+	divs.forEach(i => { i.style.width = W + 'px'; });
+	resize();
+}
+
+function onText () {
+	const t = inT.value;
+	texts.forEach(i => i.innerHTML = t);
+	resize();
+}
+</script>
+</body>
